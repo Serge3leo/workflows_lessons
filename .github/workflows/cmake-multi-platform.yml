@@ -70,7 +70,7 @@ jobs:
           - c_compiler: lcc
             cpp_compiler: l++
             lcc: 1.27.23.e2k-v5.5.10
-            dirname: lcc-${{ matrix.lcc }}
+            dirname: lcc-${{ lcc }}
             tarname: cross-sp-rel-${{ matrix.lcc }}_64.tgz
             link: https://dev.mcst.ru/downloads/2025-05-12/${{ matrix.tarname }}
             platform: "e2k"
