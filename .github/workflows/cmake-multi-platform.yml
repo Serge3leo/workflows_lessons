@@ -18,7 +18,7 @@ on:  # yamllint disable-line rule:truthy
 
 env:
   lcc_version: 1.27.23.e2k-v5.5.10
-  lcc_dirname: "lcc-$lcc_version"
+  lcc_dirname: lcc-${{ env.lcc_version }}
   lcc_tarname: "cross-sp-rel-${lcc_version}_64.tgz"
   lcc_link: "https://dev.mcst.ru/downloads/2025-05-12/${lcc_tarname}"
 
