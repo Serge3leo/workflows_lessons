@@ -27,7 +27,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      lcc_dirname: lcc-${{ env.lcc_version }}
+      lcc_dirname: lcc-${{ lcc_version }}
       lcc_tarname: "cross-sp-rel-${lcc_version}_64.tgz"
 
     strategy:
