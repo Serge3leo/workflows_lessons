@@ -16,14 +16,14 @@ on:  # yamllint disable-line rule:truthy
   pull_request:
     branches: ["main"]
 
+env:
+  lcc_version: 1.27.23.e2k-v5.5.10
+  lcc_dirname: lcc-$lcc_version
+  lcc_tarname: cross-sp-rel-${{ env.lcc_version }}_64.tgz
+  lcc_link: https://dev.mcst.ru/downloads/2025-05-12/${{ env.lcc_tarname }}
+
 jobs:
   build:
-    env:
-      lcc: 1.27.23.e2k-v5.5.10
-      dirname: lcc-${{ jobs.build.env.lcc }}
-      tarname: cross-sp-rel-${{ env.lcc }}_64.tgz
-      link: https://dev.mcst.ru/downloads/2025-05-12/${{ env.tarname }}
-
     runs-on: ${{ matrix.os }}
 
     strategy:
