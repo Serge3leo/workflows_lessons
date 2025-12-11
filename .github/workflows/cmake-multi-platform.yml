@@ -18,6 +18,12 @@ on:  # yamllint disable-line rule:truthy
 
 jobs:
   build:
+    env:
+      lcc: 1.27.23.e2k-v5.5.10
+      dirname: lcc-${{ env.lcc }}
+      tarname: cross-sp-rel-${{ env.lcc }}_64.tgz
+      link: https://dev.mcst.ru/downloads/2025-05-12/${{ env.tarname }}
+
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -69,10 +75,10 @@ jobs:
             platform: "linux"
           - c_compiler: lcc
             cpp_compiler: l++
-            lcc: 1.27.23.e2k-v5.5.10
-            dirname: lcc-${{ lcc }}
-            tarname: cross-sp-rel-${{ matrix.lcc }}_64.tgz
-            link: https://dev.mcst.ru/downloads/2025-05-12/${{ matrix.tarname }}
+            lcc: ${{ env.lcc }}
+            dirname: ${{ env.dirname }}
+            tarname: ${{ env.tarname }}
+            link: ${{ env.link }}
             platform: "e2k"
         exclude:
           - os: windows-latest
