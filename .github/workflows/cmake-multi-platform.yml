@@ -96,8 +96,8 @@ jobs:
           key: oneapi-${{ matrix.oneapi }}-apt
 
       - name: Non-cache install oneAPI
-        if: < ${{ matrix.c_compiler == 'icx' &&
-                  steps.cache-icx.outputs.cache-hit != 'true' }}
+        if: ${{ matrix.c_compiler == 'icx' && \
+                steps.cache-icx.outputs.cache-hit != 'true' }}
         run: |
           mkdir -p /opt/intel/oneapi/dir
           touch /opt/intel/oneapi/dir/file
@@ -123,8 +123,8 @@ jobs:
           key: cache-${{ matrix.lcc }}-mrognor
 
       - name: Non-cache install LCC MCST Elbrus e2k
-        if: < ${{ matrix.c_compiler == 'lcc' &&
-                  steps.cache-lcc.outputs.cache-hit != 'true' }}
+        if: ${{ matrix.c_compiler == 'lcc' && \
+                steps.cache-lcc.outputs.cache-hit != 'true' }}
         run: |
           mkdir -p /opt/mcst/bin
           touch /opt/mcst/bin/lcc
