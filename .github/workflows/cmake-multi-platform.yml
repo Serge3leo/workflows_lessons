@@ -88,7 +88,7 @@ jobs:
 
       - name: Cache install oneAPI
         if: ${{ matrix.c_compiler == 'icx' }}
-        id: cache-install
+        id: cache-icx
         uses: actions/cache@v4
         with:
           path: |
@@ -96,13 +96,11 @@ jobs:
           key: oneapi-${{ matrix.oneapi }}-apt
 
       - name: Non-cache install oneAPI
-        if: ${{ matrix.c_compiler == 'icx' }}
+        if: ${{ matrix.c_compiler == 'icx' && steps.cache-icx.outputs.cache-hit != 'true' }}  # yamllint disable-line rule:line-length
         run: |
-          if [ "${{ steps.cache-install.outputs.cache-hit }}" != "true" ]; then
-            mkdir -p /opt/intel/oneapi/dir
-            touch /opt/intel/oneapi/dir/file
-            echo "TENV=true; export TENV" > /opt/intel/oneapi/setvars.sh
-          fi
+          mkdir -p /opt/intel/oneapi/dir
+          touch /opt/intel/oneapi/dir/file
+          echo "TENV=true; export TENV" > /opt/intel/oneapi/setvars.sh
 
       - name: Setup Intel oneAPI environment
         if: ${{ matrix.c_compiler == 'icx' }}
@@ -121,7 +119,7 @@ jobs:
             /usr/local/bin/qemu-e2k
             /usr/local/bin/lcc
             /usr/local/bin/l++
-          key: cache-${{ matrix.llc }}-mrognor
+          key: cache-${{ matrix.lcc }}-mrognor
 
       - name: Non-cache install LCC MCST Elbrus e2k
         if: ${{ matrix.c_compiler == 'lcc' && steps.cache-lcc.outputs.cache-hit != 'true' }}  # yamllint disable-line rule:line-length
@@ -151,7 +149,7 @@ jobs:
       - name: Linux short_example
         if: ${{ matrix.platform == 'linux' }}
         run: |
-          if [ ${{ matrix.c_compiler }} == "icc" ; then
+          if [ ${{ matrix.c_compiler }} == "icx" ] ; then
             wc /opt/intel/oneapi/dir/file && "$TENV"
           else
             true
