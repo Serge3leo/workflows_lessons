@@ -149,7 +149,7 @@ jobs:
       - name: Linux short_example
         if: ${{ matrix.platform == 'linux' }}
         run: |
-          if [ ${{ matrix.c_compiler }} == "icc" ; then
+          if [ ${{ matrix.c_compiler }} == "icc" ] ; then
             wc /opt/intel/oneapi/dir/file && "$TENV"
           else
             true
