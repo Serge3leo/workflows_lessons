@@ -18,9 +18,9 @@ on:  # yamllint disable-line rule:truthy
 
 env:
   lcc_version: 1.27.23.e2k-v5.5.10
-  lcc_dirname: lcc-$lcc_version
-  lcc_tarname: cross-sp-rel-${lcc_version}_64.tgz
-  lcc_link: https://dev.mcst.ru/downloads/2025-05-12/${lcc_tarname}
+  lcc_dirname: "lcc-$lcc_version"
+  lcc_tarname: "cross-sp-rel-${lcc_version}_64.tgz"
+  lcc_link: "https://dev.mcst.ru/downloads/2025-05-12/${lcc_tarname}"
 
 jobs:
   build:
@@ -165,10 +165,10 @@ jobs:
       - name: E2k short_example
         if: ${{ matrix.platform == 'e2k' }}
         run: |
-          echo "lcc=$lcc_version"
-          echo "dirname=$lcc_dirname"
-          echo "tarname=$lcc_tarname"
-          echo "link=$lcc_link"
+          echo "lcc_version=$lcc_version"
+          echo "lcc_dirname=$lcc_dirname"
+          echo "lcc_tarname=$lcc_tarname"
+          echo "lcc_link=$lcc_link"
           wc /usr/local/bin/e2k /usr/local/bin/qemu-e2k /usr/local/bin/lcc \
              /usr/local/bin/l++
 
