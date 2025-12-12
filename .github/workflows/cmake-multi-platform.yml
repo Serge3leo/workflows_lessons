@@ -69,7 +69,7 @@ jobs:
             platform: "linux"
           - c_compiler: lcc
             cpp_compiler: l++
-            lcc: "1.27.23.e2k-v5.5.10"
+            mrognor_version: 0.1.1  # TODO: lcc_dirname
             platform: "e2k"
         exclude:
           - os: windows-latest
@@ -97,10 +97,12 @@ jobs:
 
       - name: Non-cache install oneAPI
         if: ${{ matrix.c_compiler == 'icx' &&
-                steps.cache-icx.outputs.cache-hit != 'true' }}
+                ! steps.cache-icx.outputs.cache-hit }}
         run: |
           mkdir -p /opt/intel/oneapi/dir
           touch /opt/intel/oneapi/dir/file
+          mkdir -p /opt/intel/oneapi/unused
+          touch /opt/intel/oneapi/unused/file
           echo "TENV=true; export TENV" > /opt/intel/oneapi/setvars.sh
 
       - name: Setup Intel oneAPI environment
@@ -120,11 +122,11 @@ jobs:
             /usr/local/bin/qemu-e2k
             /usr/local/bin/lcc
             /usr/local/bin/l++
-          key: cache-${{ matrix.lcc }}-mrognor
+          key: cache-${{ matrix.mrognor_version }}-mrognor
 
       - name: Non-cache install LCC MCST Elbrus e2k
         if: ${{ matrix.c_compiler == 'lcc' &&
-                steps.cache-lcc.outputs.cache-hit != 'true' }}
+                ! steps.cache-lcc.outputs.cache-hit }}
         run: |
           mkdir -p /opt/mcst/bin
           touch /opt/mcst/bin/lcc
@@ -149,13 +151,9 @@ jobs:
           python -m yamllint .
 
       - name: Linux short_example
-        if: ${{ matrix.platform == 'linux' }}
+        if: ${{ matrix.c_compiler == 'icx' }}
         run: |
-          if [ ${{ matrix.c_compiler }} == "icx" ] ; then
-            wc /opt/intel/oneapi/dir/file && "$TENV"
-          else
-            true
-          fi
+          wc /opt/intel/oneapi/dir/file && "$TENV"
 
       - name: E2k short_example
         if: ${{ matrix.platform == 'e2k' }}
@@ -168,3 +166,9 @@ jobs:
         shell: cmd
         run: |
           exit 0 /b
+
+      - name: Exclude unused files from oneAPI cache
+        if: ${{ matrix.c_compiler == 'icx' &&
+                ! steps.cache-icx.outputs.cache-hit }}
+        run: |
+          rm -r /opt/intel/oneapi/unused
