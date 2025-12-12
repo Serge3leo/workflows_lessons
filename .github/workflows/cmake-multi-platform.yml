@@ -70,6 +70,7 @@ jobs:
           - c_compiler: lcc
             cpp_compiler: l++
             mrognor_version: 0.1.1  # TODO: lcc_dirname
+            os: ubuntu-latest
             platform: "e2k"
         exclude:
           - os: windows-latest
