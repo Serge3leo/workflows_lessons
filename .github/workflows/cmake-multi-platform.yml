@@ -27,7 +27,7 @@ jobs:
 
       fail-fast: false
 
-      # Set up a matrix to run the following 4 configurations:
+      # Set up a matrix to run the following 5 configurations:
       #
       # 1. <Latest MSVC compiler toolchain on the default runner image,
       # Windows, Release, default generator>
