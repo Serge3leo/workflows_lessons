@@ -97,10 +97,12 @@ jobs:
 
       - name: Non-cache install oneAPI
         if: ${{ matrix.c_compiler == 'icx' &&
-                steps.cache-icx.outputs.cache-hit != 'true' }}
+                ! steps.cache-icx.outputs.cache-hit }}
         run: |
           mkdir -p /opt/intel/oneapi/dir
           touch /opt/intel/oneapi/dir/file
+          mkdir -p /opt/intel/oneapi/unused
+          touch /opt/intel/oneapi/unused/file
           echo "TENV=true; export TENV" > /opt/intel/oneapi/setvars.sh
 
       - name: Setup Intel oneAPI environment
@@ -124,7 +126,7 @@ jobs:
 
       - name: Non-cache install LCC MCST Elbrus e2k
         if: ${{ matrix.c_compiler == 'lcc' &&
-                steps.cache-lcc.outputs.cache-hit != 'true' }}
+                ! steps.cache-lcc.outputs.cache-hit }}
         run: |
           mkdir -p /opt/mcst/bin
           touch /opt/mcst/bin/lcc
@@ -168,3 +170,9 @@ jobs:
         shell: cmd
         run: |
           exit 0 /b
+
+      - name: Exclude unused files from oneAPI cache
+        if: ${{ matrix.c_compiler == 'icx' &&
+                ! steps.cache-icx.outputs.cache-hit }}
+        run: |
+          rm -r /opt/intel/oneapi/unused
